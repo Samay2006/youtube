@@ -12,4 +12,4 @@ const database=async()=>{
     }
 }
 
-export {database}sa
+export {database}
