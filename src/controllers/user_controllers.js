@@ -1,9 +1,13 @@
-import  asynchandler from "./Utils/asynchandler.js"
+import  {asynchandler} from "../Utils/asynchandler.js"
 
 
 
 const register=asynchandler(async(req,res)=>{
-    res.status(200).json({
-        message:"ok"
-    })
+   
+    const {fullname}=req.body
+console.log(fullname);
+
 })
+
+export {register}
+

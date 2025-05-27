@@ -16,4 +16,9 @@ app.use(express.urlencoded({limit:"16kb"}))//accapting data threw url
 app.use(express.static("public"))//it store use info like pdf and img in our localspace in public folder 
 
 app.use(cookieParser())//it help  us to access the user cookie in our local device(server) and perform the operation on it
+
+import router from "./routes/user_routes.js"
+
+app.use("/api/v1/user/",router)
+//http://localhost:8000/api/vi/user
 export {app}
