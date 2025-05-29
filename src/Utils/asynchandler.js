@@ -13,7 +13,7 @@ const asynchandler=(fun)=>{
         
     };
 };
-export {asynchandler}
+export {asynchandler }
 
 
 // const asynchandler2= (fun) => {
