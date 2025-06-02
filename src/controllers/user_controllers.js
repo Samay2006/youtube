@@ -27,7 +27,7 @@ if(!avatarlocalpath){
 const avataroncloud=await uploadOnCloudinary(avatarlocalpath)
 
 if(!avataroncloud){
-    throw new apierror(400,"please seat avatar field")
+    throw new apierror(400,"not able to upload in cloud")
 }
 
 // now we make obj of user detail
@@ -39,15 +39,15 @@ const user= await User.create({
     email
     
 })
-
+// 
 const  userfind= await User.findById(user._id).select(
 "-password -refreshToken")
 if(!user){
     throw new apierror(500,"somthing is wrong")
 }
-
+console.log(userfind)
  res.status(201).json(
-        new apiresponce(200,username,fullname,email,"done")
+        new apiresponce(200,userfind,"done")
      )
 
 

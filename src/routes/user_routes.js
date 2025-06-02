@@ -1,6 +1,9 @@
 import { Router } from "express";
 import { register } from "../controllers/user_controllers.js";
 import { upload } from "../middlewares/multer.js";
+import { login } from "../controllers/login_controller.js";
+import { verifyjwt } from "../middlewares/auth.js";
+import { logout } from "../controllers/logout.js";
 const router=Router();
 
 //http://localhost:8000/api/v1/user/register
@@ -13,5 +16,8 @@ maxCount:1
     
 ]),register)
 //http://localhost:8000/api/v1/user/login
-// router.route("/login").post(login)
+router.route("/login").post(login)
+
+
+router.route("/logout").post(verifyjwt,logout)
 export default router
