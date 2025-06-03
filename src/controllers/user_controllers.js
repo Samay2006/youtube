@@ -3,6 +3,7 @@ import { apierror } from "../Utils/apierror.js";
 import { User } from "../models/user.js";
 import { uploadOnCloudinary } from "../Utils/cloudinary.js";
 import { apiresponce } from "../Utils/apiresponce.js";
+import jwt from "jsonwebtoken"
 const register=asynchandler(async(req,res)=>{
 
 
@@ -50,7 +51,56 @@ console.log(userfind)
         new apiresponce(200,userfind,"done")
      )
 
-
-
 })
-export {register}
+
+
+
+
+
+
+
+
+
+
+const refreshaccesstoken= asynchandler(async(req,res,next)=>{
+
+// const acctoken=req.cookies.accessToken;
+const retoken=req.cookies.refreshToken||req.boby.refreshToken;
+if(!retoken){
+    throw  new apierror(500,"refreshToken not founded")
+}
+verifiedtoken=jwt.verify(retoken,process.env.REFRESH_TOKEN_SECRET)
+if(!verifiedtoken){
+    throw new apierror(500,"token is not valid")
+}
+
+const user=await  User.findById(verifiedtoken._id)
+
+if(!user){
+    throw new apierror(500," from update token user not founded")
+}
+if(retoken!==user.refreshToken){
+        throw new apierror(500,"token is not valid")
+
+}
+
+const access=user.generatetokenAccessToken();
+const refresh=user.generateRefreshToken();
+user.refreshToken=refresh
+await user.save({validateBeforeSave:false})
+ 
+const option={
+    httpOnly:true,
+    secure:true
+}
+
+res.status(200)
+.cookie("accessToken",access,option)
+.cookie("refreshToken",refresh,option)
+.json(new apiresponce(200,{
+    access,refresh
+},("refresh successfully")))
+})
+
+
+export {register,refreshaccesstoken}
